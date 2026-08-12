@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GymTracker - Entrena & Supera tus Límites</title>
+    <!-- Fonts Google: Outfit & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Favicon, Manifest & PWA Icon -->
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="apple-touch-icon" href="assets/logo.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#f0f4f8">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+
+<body>
+
+    <div class="app-container">
+        <!--=========================================
+                        HEADER
+        ==========================================-->
+        <header class="app-header">
+            <div class="brand" id="btnHomeHeader">
+                <img src="assets/logo.png" alt="GymTracker" class="brand-logo-img">
+                <span class="brand-title">GymTracker</span>
+            </div>
+            <div class="header-actions">
+                <button id="btnHelpHeader" class="btn-icon" title="Manual de Uso">
+                    📖 Manual
+                </button>
+                <button id="btnQuickTimer" class="btn-icon" title="Temporizador de descanso">
+                    ⏱️ <span id="timerBadge" class="timer-badge">00:00</span>
+                </button>
+                <button id="btnInstallApp" class="btn-icon" title="Instalar App" style="display:none">📲
+                    Instalar</button>
+            </div>
+        </header>
+
+        <!-- Banner de instalación -->
+        <div id="installBanner"
+            style="display:none; background: linear-gradient(135deg,#6c63ff,#4f46e5); color:#fff; padding:12px 16px; text-align:center; font-size:14px; font-weight:600; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap;">
+            <span>📲 ¡Instala GymTracker en tu celular!</span>
+            <button id="btnInstallBanner"
+                style="background:#fff; color:#4f46e5; border:none; padding:8px 18px; border-radius:20px; font-weight:700; cursor:pointer;">Instalar
+                ahora</button>
+        </div>
+
+        <!--=========================================
+                    1. PANTALLA INICIO
+        ==========================================-->
+        <section id="pantallaInicio" class="screen active">
+            <div class="welcome-card">
+                <div class="welcome-text">
+                    <div class="greeting-row">
+                        <h2 id="saludoTexto">¡Hola, Atleta! 👋</h2>
+                        <button class="btn-edit-name" id="btnEditName" title="Cambiar nombre">✏️</button>
+                    </div>
+                    <p id="saludoSubtexto">Selecciona tu rutina de hoy y registra cada serie.</p>
+                </div>
+                <div class="stats-mini" id="miniStats">
+                    <div class="stat-pill">
+                        <span class="stat-num" id="statTotalWorkouts">0</span>
+                        <span class="stat-label">Sesiones</span>
+                    </div>
+                    <div class="stat-pill">
+                        <span class="stat-num" id="statTotalVolume">0 kg</span>
+                        <span class="stat-label">Volumen total</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-title">
+                <h3>Elige tu Entrenamiento</h3>
+            </div>
+
+            <div class="dashboard-grid">
+                <!-- SUPERIOR -->
+                <article class="card main-card" id="btnCardSuperior"
+                    style="background-image: url('assets/card_superior.png'); background-size: cover; background-position: center top;">
+                    <div class="card-img-overlay"></div>
+                    <div class="card-badge">Tren Superior</div>
+                    <div class="card-content card-content-img">
+                        <h3>Superior</h3>
+                        <p>Pecho, Espalda, Hombros, Bíceps y Tríceps</p>
+                        <span class="card-action">Entrenar →</span>
+                    </div>
+                </article>
+
+                <!-- PIERNA -->
+                <article class="card main-card" id="btnCardPierna"
+                    style="background-image: url('assets/card_pierna.png'); background-size: cover; background-position: center;">
+                    <div class="card-img-overlay"></div>
+                    <div class="card-badge leg-badge">Tren Inferior</div>
+                    <div class="card-content card-content-img">
+                        <h3>Pierna</h3>
+                        <p>Cuádriceps, Femorales, Glúteos y Pantorrillas</p>
+                        <span class="card-action">Entrenar →</span>
+                    </div>
+                </article>
+
+                <!-- CAMINADORA -->
+                <article class="card main-card cardio-card" id="btnCardCaminadora"
+                    style="background-image: url('assets/card_caminadora.png'); background-size: cover; background-position: center;">
+                    <div class="card-img-overlay"></div>
+                    <div class="card-badge cardio-badge">Cardio</div>
+                    <div class="card-content card-content-img">
+                        <h3>Caminadora</h3>
+                        <p>Registra tiempo y distancia recorrida</p>
+                        <span class="card-action">Registrar →</span>
+                    </div>
+                </article>
+
+                <!-- PROGRESO -->
+                <article class="card main-card progress-card" id="btnCardProgreso">
+                    <div class="card-badge prog-badge">Estadísticas</div>
+                    <div class="card-icon-bg">📊</div>
+                    <div class="card-content">
+                        <h3>Mi Progreso</h3>
+                        <p>Consulta tu historial, récords y estadísticas</p>
+                        <span class="card-action">Ver Historial →</span>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!--=========================================
+                    2. PANTALLA GRUPOS MUSCULARES
+        ==========================================-->
+        <section id="pantallaGrupos" class="screen">
+            <div class="screen-header">
+                <button class="btn-back" id="btnBackToInicio">← Volver</button>
+                <h2 id="tituloCategoria">Categoría</h2>
+            </div>
+            <p class="screen-subtitle" id="subtituloCategoria">Selecciona el grupo muscular a trabajar</p>
+
+            <div class="muscle-grid" id="containerGrupos">
+                <!-- Se genera dinámicamente desde JS -->
+            </div>
+        </section>
+
+        <!--=========================================
+                    3. PANTALLA LISTA EJERCICIOS
+        ==========================================-->
+        <section id="pantallaEjercicios" class="screen">
+            <div class="screen-header">
+                <button class="btn-back" id="btnBackToGrupos">← Volver</button>
+                <h2 id="tituloGrupoMuscular">Grupo Muscular</h2>
+            </div>
+            <p class="screen-subtitle">Selecciona el ejercicio para registrar tus series</p>
+
+            <div class="exercise-list" id="containerEjercicios">
+                <!-- Se genera dinámicamente desde JS -->
+            </div>
+        </section>
+
+        <!--=========================================
+                    4. PANTALLA CAMINADORA
+        ==========================================-->
+        <section id="pantallaCaminadora" class="screen">
+            <div class="screen-header">
+                <button class="btn-back" id="btnBackToInicioFromCaminadora">← Volver</button>
+                <h2>🏃 Caminadora</h2>
+            </div>
+            <p class="screen-subtitle">Registra tus sesiones de cardio en caminadora</p>
+
+            <!-- Resumen rápido cardio -->
+            <div class="cardio-quick-stats">
+                <div class="cardio-stat-item">
+                    <span class="cardio-stat-val" id="caminadoraTotalSesiones">0</span>
+                    <span class="cardio-stat-lbl">Sesiones</span>
+                </div>
+                <div class="cardio-stat-item">
+                    <span class="cardio-stat-val" id="caminadoraTotalKm">0 km</span>
+                    <span class="cardio-stat-lbl">Distancia total</span>
+                </div>
+                <div class="cardio-stat-item">
+                    <span class="cardio-stat-val" id="caminadoraTotalMin">0 min</span>
+                    <span class="cardio-stat-lbl">Tiempo total</span>
+                </div>
+            </div>
+
+            <button id="btnNuevaSessionCardio" class="btn-cardio-new">
+                ➕ Nueva Sesión de Caminadora
+            </button>
+
+            <div class="history-actions" style="margin-top: 20px;">
+                <h3>Historial Cardio</h3>
+            </div>
+
+            <div id="containerCardioHistorial" class="history-list">
+                <!-- Se llena dinámicamente -->
+            </div>
+        </section>
+
+        <!--=========================================
+                    5. PANTALLA MI PROGRESO
+        ==========================================-->
+        <section id="pantallaProgreso" class="screen">
+            <div class="screen-header">
+                <button class="btn-back" id="btnBackToInicioFromProgreso">← Volver</button>
+                <h2>Mi Progreso</h2>
+            </div>
+            <p class="screen-subtitle">Historial de entrenamientos y marcas registradas</p>
+
+            <!-- Resumen Pesas -->
+            <div class="progreso-section-label">🏋️ Entrenamiento con Pesas</div>
+            <div class="progreso-summary">
+                <div class="summary-box">
+                    <span class="summary-val" id="progresoTotalRutinas">0</span>
+                    <span class="summary-lbl">Entrenamientos</span>
+                </div>
+                <div class="summary-box">
+                    <span class="summary-val" id="progresoTotalSeries">0</span>
+                    <span class="summary-lbl">Series Totales</span>
+                </div>
+                <div class="summary-box">
+                    <span class="summary-val" id="progresoTotalKg">0 kg</span>
+                    <span class="summary-lbl">Kilos Levantados</span>
+                </div>
+            </div>
+
+            <!-- Resumen Cardio -->
+            <div class="progreso-section-label cardio-label">🏃 Cardio — Caminadora</div>
+            <div class="progreso-summary">
+                <div class="summary-box cardio-box">
+                    <span class="summary-val cardio-val" id="progresoCardioSesiones">0</span>
+                    <span class="summary-lbl">Sesiones</span>
+                </div>
+                <div class="summary-box cardio-box">
+                    <span class="summary-val cardio-val" id="progresoCardioKm">0 km</span>
+                    <span class="summary-lbl">Kilómetros</span>
+                </div>
+                <div class="summary-box cardio-box">
+                    <span class="summary-val cardio-val" id="progresoCardioMin">0 min</span>
+                    <span class="summary-lbl">Minutos</span>
+                </div>
+            </div>
+
+            <div class="history-actions">
+                <h3>Historial Reciente</h3>
+                <button id="btnClearHistory" class="btn-danger-outline">🗑️ Borrar Historial</button>
+            </div>
+
+            <div id="containerHistorial" class="history-list">
+                <!-- Se llena dinámicamente -->
+            </div>
+        </section>
+
+        <!--=========================================
+                    MODAL NOMBRE DE USUARIO
+        ==========================================-->
+        <div id="modalNombre" class="modal-overlay active">
+            <div class="modal-card nombre-modal-card">
+                <div class="nombre-modal-icon">💪</div>
+                <h2 class="nombre-modal-title">¡Bienvenido a GymTracker!</h2>
+                <p class="nombre-modal-desc">¿Cómo te llamas? Así podré saludarte cada vez que entrenes.</p>
+                <input type="text" id="inputNombreUsuario" class="nombre-input" placeholder="Escribe tu nombre..."
+                    maxlength="20" autocomplete="off">
+                <button id="btnGuardarNombre" class="btn-primary btn-full">¡Empecemos! 🚀</button>
+            </div>
+        </div>
+
+        <!--=========================================
+                    MODAL DE REGISTRO DE SERIE
+        ==========================================-->
+        <div id="modalRegistro" class="modal-overlay">
+            <div class="modal-card">
+                <div class="modal-header">
+                    <div>
+                        <span class="modal-tag" id="modalGrupoTag">Pecho</span>
+                        <h3 id="modalEjercicioNombre">Press Plano</h3>
+                    </div>
+                    <button class="btn-close-modal" id="btnCloseModal">✕</button>
+                </div>
+
+                <div class="modal-body">
+
+                    <!-- Última Sesión: se muestra solo si hay datos previos -->
+                    <div class="last-session-box" id="lastSessionBox" style="display:none">
+                        <div class="last-session-header">
+                            <span class="last-session-icon">📅</span>
+                            <div>
+                                <span class="last-session-title">Última Sesión</span>
+                                <span class="last-session-date" id="lastSessionDate"></span>
+                            </div>
+                        </div>
+                        <div class="last-session-series" id="lastSessionSeries">
+                            <!-- Se llena dinámicamente -->
+                        </div>
+                    </div>
+
+                    <!-- Formulario de entrada -->
+                    <form id="formAddSet" class="set-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="inputPeso">Peso (kg)</label>
+                                <input type="number" id="inputPeso" placeholder="Ej: 80" step="0.5" min="0" max="9999" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputReps">Repeticiones</label>
+                                <input type="number" id="inputReps" placeholder="Ej: 10" min="1" max="999" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="selectTipoSerie">Tipo de Serie</label>
+                                <select id="selectTipoSerie">
+                                    <option value="Efectiva">🔥 Efectiva</option>
+                                    <option value="Calentamiento">♨️ Calentamiento</option>
+                                    <option value="Drop Set">💥 Drop Set</option>
+                                    <option value="Fallo">💀 Al Fallo</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-primary btn-block">➕ Registrar Serie</button>
+                    </form>
+
+                    <!-- Lista de series de hoy -->
+                    <div class="sets-today-section">
+                        <h4>Series de hoy (<span id="countSetsToday">0</span>)</h4>
+                        <div class="table-wrapper">
+                            <table class="sets-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Tipo</th>
+                                        <th>Kg</th>
+                                        <th>Reps</th>
+                                        <th>Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodySeriesList">
+                                    <!-- Filas agregadas -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Récord Personal / Última Sesión -->
+                    <div class="exercise-info-box" id="infoBoxPR">
+                        <span>🏆 Mejor Serie Registrada: <strong id="lblBestSet">Sin datos</strong></span>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button id="btnStartRestTimer" class="btn-secondary">⏱️ Iniciar Descanso (90s)</button>
+                    <button id="btnFinalizarEjercicio" class="btn-success">✅ Guardar y Cerrar</button>
+                </div>
+            </div>
+        </div>
+
+        <!--=========================================
+                    MODAL / DRAWER TEMPORIZADOR
+        ==========================================-->
+        <div id="modalTimer" class="modal-overlay">
+            <div class="modal-card timer-card">
+                <div class="modal-header">
+                    <h3>⏱️ Temporizador de Descanso</h3>
+                    <button class="btn-close-modal" id="btnCloseTimerModal">✕</button>
+                </div>
+                <div class="timer-display">
+                    <span id="timerClock" class="timer-digits">01:30</span>
+                </div>
+                <div class="timer-presets">
+                    <button class="btn-preset" data-seconds="30">30s</button>
+                    <button class="btn-preset" data-seconds="60">60s</button>
+                    <button class="btn-preset active" data-seconds="90">90s</button>
+                    <button class="btn-preset" data-seconds="120">120s</button>
+                    <button class="btn-preset" data-seconds="180">180s</button>
+                </div>
+                <div class="timer-controls">
+                    <button id="btnTimerStart" class="btn-primary">▶️ Iniciar</button>
+                    <button id="btnTimerPause" class="btn-secondary" disabled>⏸️ Pausar</button>
+                    <button id="btnTimerReset" class="btn-danger-outline">🔄 Reiniciar</button>
+                </div>
+            </div>
+        </div>
+
+        <!--=========================================
+                    MODAL / MANUAL DE INSTRUCCIONES
+        ==========================================-->
+        <div id="modalHelp" class="modal-overlay">
+            <div class="modal-card">
+                <div class="modal-header">
+                    <h3>📖 Manual de Uso - GymTracker</h3>
+                    <button class="btn-close-modal" id="btnCloseHelpModal">✕</button>
+                </div>
+                <div class="modal-body">
+                    <div class="help-section">
+                        <h4>1. 🏋️ Registro de Entrenamientos</h4>
+                        <p>Selecciona <strong>Superior</strong> o <strong>Pierna</strong>, elige el grupo muscular y el
+                            ejercicio. Ingresa tus kilos, repeticiones y tipo de serie (Efectiva, Calentamiento, Drop
+                            Set, Al Fallo).</p>
+                    </div>
+                    <div class="help-section">
+                        <h4>2. ⏱️ Temporizador & Pantalla Encendida</h4>
+                        <p>Al activar el temporizador de descanso, la pantalla se mantendrá <strong>encendida</strong>
+                            para evitar bloqueos. Cuando llegue a <code>00:00</code> sonarás 3 pitidos de aviso y tu
+                            celular vibrará.</p>
+                    </div>
+                    <div class="help-section">
+                        <h4>3. 📊 Historial y Récords (PRs)</h4>
+                        <p>En <strong>Mi Progreso</strong> consulta el volumen acumulado en kilos, total de series y tus
+                            mejores marcas personales registradas.</p>
+                    </div>
+                    <div class="help-section">
+                        <h4>4. 🔒 Almacenamiento 100% Seguro</h4>
+                        <p>Tus datos quedan guardados en la memoria local de tu celular (<em>localStorage</em>) sin
+                            requerir contraseñas.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnGotItHelp" class="btn-primary btn-block">¡Entendido! 👍</button>
+                </div>
+            </div>
+        </div>
+
+        <!--=========================================
+                    MODAL REGISTRO CAMINADORA
+        ==========================================-->
+        <div id="modalCaminadora" class="modal-overlay">
+            <div class="modal-card">
+                <div class="modal-header">
+                    <div>
+                        <span class="modal-tag cardio-modal-tag">Cardio</span>
+                        <h3>🏃 Registrar Caminadora</h3>
+                    </div>
+                    <button class="btn-close-modal" id="btnCloseModalCaminadora">✕</button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="formCaminadora" class="set-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="inputDuracion">⏱️ Duración (minutos)</label>
+                                <input type="number" id="inputDuracion" placeholder="30" min="1" step="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputDistancia">📏 Distancia (km)</label>
+                                <input type="number" id="inputDistancia" placeholder="3.0" min="0" step="0.1" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>🔥 Intensidad</label>
+                            <div class="intensidad-options">
+                                <label class="intensidad-btn suave">
+                                    <input type="radio" name="intensidad" value="Suave" checked>
+                                    <span>🟢 Suave</span>
+                                </label>
+                                <label class="intensidad-btn moderada">
+                                    <input type="radio" name="intensidad" value="Moderada">
+                                    <span>🟡 Moderada</span>
+                                </label>
+                                <label class="intensidad-btn intensa">
+                                    <input type="radio" name="intensidad" value="Intensa">
+                                    <span>🔴 Intensa</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputNotaCardio">📝 Nota (opcional)</label>
+                            <input type="text" id="inputNotaCardio"
+                                placeholder="Ej: Caminata matutina, inclinación 5%..." maxlength="80">
+                        </div>
+
+                        <button type="submit" class="btn-primary btn-block btn-cardio-submit">✅ Guardar Sesión</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="app-footer">
+            <p>GymTracker v1.1 • Diseñado para alto rendimiento</p>
+        </footer>
+    </div>
+
+    <script src="main.js"></script>
+    <script>
+        // ── Service Worker ──────────────────────────────
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(() => console.log('✅ SW registrado'))
+                    .catch((err) => console.error('❌ SW error:', err));
+            });
+        }
+
+        // ── Botón de instalación PWA ─────────────────────
+        let deferredPrompt = null;
+        const btnInstall = document.getElementById('btnInstallApp');
+        const banner = document.getElementById('installBanner');
+        const btnBanner = document.getElementById('btnInstallBanner');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            // Muestra botón en header y banner
+            btnInstall.style.display = 'flex';
+            banner.style.display = 'flex';
+        });
+
+        function instalarApp() {
+            if (!deferredPrompt) return;
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then(() => {
+                deferredPrompt = null;
+                btnInstall.style.display = 'none';
+                banner.style.display = 'none';
+            });
+        }
+
+        btnInstall.addEventListener('click', instalarApp);
+        btnBanner.addEventListener('click', instalarApp);
+
+        // Si ya está instalada, oculta todo
+        window.addEventListener('appinstalled', () => {
+            btnInstall.style.display = 'none';
+            banner.style.display = 'none';
+            deferredPrompt = null;
+        });
+    </script>
+</body>
+
+</html>
