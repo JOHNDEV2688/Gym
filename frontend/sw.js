@@ -1,5 +1,5 @@
-// GymTracker - Service Worker v1.9
-const CACHE_NAME = 'gymtracker-v1.9';
+// GymTracker - Service Worker v2.0
+const CACHE_NAME = 'gymtracker-v2.0';
 const ASSETS = [
   './',
   './index.html',

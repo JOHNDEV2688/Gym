@@ -656,22 +656,118 @@ function cargarLogsDesdeStorage() {
 }
 
 function actualizarMetricasInicio() {
-    const totalSesiones = state.workoutLogs.length;
-    let totalKg = 0;
+    const hoy = new Date();
 
-    state.workoutLogs.forEach(log => {
-        log.series.forEach(s => {
-            totalKg += (s.peso * s.reps);
-        });
-    });
+    // --- Días entrenados esta semana ---
+    const diasSemana = obtenerDiasSemanaActual(hoy);
+    const diasEntrenadosSemana = new Set(
+        state.workoutLogs
+            .map(l => l.fecha)
+            .filter(f => diasSemana.includes(f))
+    ).size;
 
-    statTotalWorkouts.textContent = totalSesiones;
-    statTotalVolume.textContent = `${Math.round(totalKg).toLocaleString()} kg`;
+    // --- Racha de días consecutivos ---
+    const racha = calcularRachaConsecutiva();
+
+    statTotalWorkouts.textContent = diasEntrenadosSemana;
+    document.getElementById('statStreak').textContent = `${racha} 🔥`;
+
+    // Actualizar el calendario semanal
+    renderizarCalendarioSemanal();
 }
 
 function obtenerFechaHoyStr() {
     const today = new Date();
     return `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+}
+
+/*==================================================
+    FUNCIONES DE SEMANA, RACHA Y CALENDARIO
+==================================================*/
+
+/**
+ * Retorna un array con las fechas (en formato YYYY-M-D) de los 7 días
+ * de la semana actual (Lunes a Domingo) a partir de cualquier fecha.
+ */
+function obtenerDiasSemanaActual(refDate) {
+    const dias = [];
+    const d = new Date(refDate);
+    // Ajustar al lunes de esta semana (getDay() = 0 domingo, 1 lunes...)
+    const diaSemana = d.getDay(); // 0=dom, 1=lun,...
+    const offsetLunes = diaSemana === 0 ? -6 : 1 - diaSemana;
+    d.setDate(d.getDate() + offsetLunes);
+    for (let i = 0; i < 7; i++) {
+        const dd = new Date(d);
+        dd.setDate(d.getDate() + i);
+        dias.push(`${dd.getFullYear()}-${dd.getMonth() + 1}-${dd.getDate()}`);
+    }
+    return dias;
+}
+
+/**
+ * Calcula la racha de días consecutivos hacia atrás desde hoy.
+ * Cuenta un día como "entrenado" si hay al menos 1 workout log.
+ */
+function calcularRachaConsecutiva() {
+    const fechasEntrenadas = new Set(state.workoutLogs.map(l => l.fecha));
+    let racha = 0;
+    const cursor = new Date();
+    // Si hoy no se entrenó, empezar a contar desde ayer
+    const hoyStr = `${cursor.getFullYear()}-${cursor.getMonth() + 1}-${cursor.getDate()}`;
+    if (!fechasEntrenadas.has(hoyStr)) {
+        cursor.setDate(cursor.getDate() - 1);
+    }
+    while (true) {
+        const fechaStr = `${cursor.getFullYear()}-${cursor.getMonth() + 1}-${cursor.getDate()}`;
+        if (fechasEntrenadas.has(fechaStr)) {
+            racha++;
+            cursor.setDate(cursor.getDate() - 1);
+        } else {
+            break;
+        }
+        if (racha > 365) break; // Seguridad máxima
+    }
+    return racha;
+}
+
+/**
+ * Renderiza el strip de 7 días (L-D) en el welcome card,
+ * iluminando los días donde hay al menos 1 workout o cardio registrado.
+ */
+function renderizarCalendarioSemanal() {
+    const container = document.getElementById('weeklyCalendar');
+    if (!container) return;
+
+    const hoy = new Date();
+    const diasSemana = obtenerDiasSemanaActual(hoy);
+    const hoyStr = obtenerFechaHoyStr();
+
+    // Conjunto de todas las fechas entrenadas (pesas + cardio)
+    const fechasEntrenadas = new Set([
+        ...state.workoutLogs.map(l => l.fecha),
+        ...state.cardioLogs.map(l => l.fecha)
+    ]);
+
+    const nombresCortos = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+
+    container.innerHTML = '';
+    diasSemana.forEach((fechaStr, idx) => {
+        const entrenado = fechasEntrenadas.has(fechaStr);
+        const esHoy = fechaStr === hoyStr;
+
+        const dayEl = document.createElement('div');
+        dayEl.className = [
+            'cal-day',
+            entrenado ? 'cal-day--done' : '',
+            esHoy ? 'cal-day--today' : ''
+        ].filter(Boolean).join(' ');
+
+        dayEl.innerHTML = `
+            <span class="cal-label">${nombresCortos[idx]}</span>
+            <span class="cal-dot">${entrenado ? '🟣' : ''}</span>
+        `;
+        container.appendChild(dayEl);
+    });
 }
 
 /*==================================================

@@ -225,7 +225,8 @@ body {
 
 .stats-mini {
     display: flex;
-    gap: 12px;
+    gap: 10px;
+    margin-bottom: 14px;
 }
 
 .stat-pill {
@@ -233,25 +234,106 @@ body {
     background: rgba(59, 130, 246, 0.07);
     border: 1px solid rgba(59, 130, 246, 0.18);
     border-radius: var(--radius-md);
-    padding: 12px 10px;
+    padding: 12px 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2px;
+    gap: 3px;
+    transition: var(--transition);
+}
+
+.stat-pill-streak {
+    background: rgba(245, 158, 11, 0.10);
+    border-color: rgba(245, 158, 11, 0.30);
 }
 
 .stat-num {
     font-family: var(--font-heading);
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 700;
     color: var(--primary);
 }
 
+.streak-num {
+    color: var(--accent-amber);
+}
+
 .stat-label {
-    font-size: 11px;
+    font-size: 10px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    text-align: center;
+}
+
+/* =============================================
+   CALENDARIO SEMANAL VISUAL
+   ============================================= */
+.weekly-calendar {
+    display: flex;
+    gap: 6px;
+    justify-content: space-between;
+    padding: 10px 4px 2px;
+    position: relative;
+    z-index: 1;
+}
+
+.cal-day {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.cal-label {
+    font-size: 10px;
+    font-weight: 700;
     color: var(--text-dim);
     text-transform: uppercase;
     letter-spacing: 0.5px;
+}
+
+.cal-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    border: 2px solid rgba(255, 255, 255, 0.10);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    transition: var(--transition);
+}
+
+/* Día entrenado */
+.cal-day--done .cal-dot {
+    background: rgba(139, 92, 246, 0.25);
+    border-color: rgba(139, 92, 246, 0.60);
+    box-shadow: 0 0 8px rgba(139, 92, 246, 0.35);
+}
+
+.cal-day--done .cal-label {
+    color: #a78bfa;
+}
+
+/* Día de hoy */
+.cal-day--today .cal-dot {
+    border-color: var(--primary);
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.50);
+}
+
+.cal-day--today .cal-label {
+    color: var(--primary);
+    font-weight: 800;
+}
+
+/* Hoy + entrenado */
+.cal-day--today.cal-day--done .cal-dot {
+    background: rgba(59, 130, 246, 0.30);
+    border-color: var(--primary);
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.60);
 }
 
 .section-title {

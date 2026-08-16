@@ -64,15 +64,21 @@
                     </div>
                     <p id="saludoSubtexto">Selecciona tu rutina de hoy y registra cada serie.</p>
                 </div>
+                <!-- Semana actual + Racha -->
                 <div class="stats-mini" id="miniStats">
                     <div class="stat-pill">
                         <span class="stat-num" id="statTotalWorkouts">0</span>
-                        <span class="stat-label">Sesiones</span>
+                        <span class="stat-label">Días esta semana</span>
                     </div>
-                    <div class="stat-pill">
-                        <span class="stat-num" id="statTotalVolume">0 kg</span>
-                        <span class="stat-label">Volumen total</span>
+                    <div class="stat-pill stat-pill-streak">
+                        <span class="stat-num streak-num" id="statStreak">0 🔥</span>
+                        <span class="stat-label">Racha días</span>
                     </div>
+                </div>
+
+                <!-- Calendario semanal visual -->
+                <div class="weekly-calendar" id="weeklyCalendar">
+                    <!-- Se genera dinámicamente desde JS -->
                 </div>
             </div>
 
