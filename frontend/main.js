@@ -328,15 +328,82 @@ document.addEventListener("DOMContentLoaded", () => {
     configurarEventosTimer();
     configurarEventosCaminadora();
     inicializarSaludo();
+
+    // Reemplazar el estado inicial del historial para que el botón
+    // atrás del dispositivo no cierre la app desde la pantalla de inicio
+    history.replaceState({ screenId: 'pantallaInicio' }, '');
+    window.addEventListener('popstate', manejarBackButton);
 });
 
 /*==================================================
     NAVEGACIÓN Y PANTALLAS
 ==================================================*/
-function cambiarPantalla(pantallaObjetivo) {
+
+/*==================================================
+    BOTÓN ATRÁS DEL DISPOSITIVO (Hardware Back)
+==================================================*/
+/**
+ * Retorna el id de la pantalla actualmente visible.
+ */
+function getCurrentScreenId() {
+    const active = Object.values(screens).find(s => s.classList.contains('active'));
+    return active ? active.id : 'pantallaInicio';
+}
+
+/**
+ * Maneja el evento popstate (botón atrás físico del celular).
+ * Prioridad 1 → cerrar modales abiertos.
+ * Prioridad 2 → retroceder entre pantallas.
+ * Prioridad 3 → si ya está en inicio, reinsertar estado para evitar salir de la app.
+ */
+function manejarBackButton() {
+    // -- Prioridad 1: cerrar cualquier modal visible --
+    const modales = [
+        modalRegistro,
+        modalTimer,
+        modalHelp,
+        document.getElementById('modalCaminadora')
+    ];
+    const modalAbierto = modales.find(m => m && m.classList.contains('active'));
+
+    if (modalAbierto) {
+        modalAbierto.classList.remove('active');
+        desbloquearScrollBody();
+        // Restituir un estado en el historial para la pantalla actual
+        history.pushState({ screenId: getCurrentScreenId() }, '');
+        return;
+    }
+
+    // -- Prioridad 2: navegar hacia atrás entre pantallas --
+    const screenActual = getCurrentScreenId();
+
+    switch (screenActual) {
+        case 'pantallaEjercicios':
+            cambiarPantalla(screens.grupos, false);
+            break;
+        case 'pantallaGrupos':
+        case 'pantallaCaminadora':
+        case 'pantallaProgreso':
+            cambiarPantalla(screens.inicio, false);
+            break;
+        case 'pantallaInicio':
+        default:
+            // Ya está en inicio: reinsertar estado para evitar que el sistema
+            // cierre la app o salga del modo standalone PWA
+            history.pushState({ screenId: 'pantallaInicio' }, '');
+            break;
+    }
+}
+
+function cambiarPantalla(pantallaObjetivo, pushHistory = true) {
     Object.values(screens).forEach(screen => screen.classList.remove("active"));
     pantallaObjetivo.classList.add("active");
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Registrar la navegación en el historial del navegador
+    // para que el botón atrás del dispositivo funcione dentro de la app
+    if (pushHistory) {
+        history.pushState({ screenId: pantallaObjetivo.id }, '');
+    }
 }
 
 function configurarEventosNavegacion() {
