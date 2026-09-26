@@ -47,6 +47,7 @@ const WGER_IMAGES = {
     hip_thrust:            "assets/ejercicios/hip_thrust.png",
     patada_gluteo:         "assets/ejercicios/patada_gluteo.png",
     abductores:            "assets/ejercicios/abductores.png",
+    aductor_maquina:       "assets/ejercicios/aductor_maquina.png",
     // Pantorrillas (AI)
     elevacion_talones_pie:     "assets/ejercicios/elevacion_talones_pie.png",
     elevacion_talones_sentado: "assets/ejercicios/elevacion_talones_sentado.png"
@@ -168,7 +169,8 @@ const EXERCISES_DATA = {
                 ejercicios: [
                     { id: "hip_thrust",    nombre: "Hip Thrust con Barra",      icono: "🏋️", imagen: "assets/ejercicios/hip_thrust.png",    desc: "Máxima activación del glúteo mayor" },
                     { id: "patada_gluteo", nombre: "Patada de Glúteo en Polea", icono: "🦵", imagen: "assets/ejercicios/patada_gluteo.png", desc: "Aislamiento de extensión de cadera" },
-                    { id: "abductores",    nombre: "Abductores en Máquina",     icono: "↔️", imagen: "assets/ejercicios/abductores.png",    desc: "Enfoque en glúteo medio" }
+                    { id: "abductores",    nombre: "Abductores en Máquina",     icono: "↔️", imagen: "assets/ejercicios/abductores.png",    desc: "Abrir piernas — enfoque en glúteo medio" },
+                    { id: "aductor_maquina", nombre: "Aductor en Máquina",       icono: "🔒", imagen: "assets/ejercicios/aductor_maquina.png", desc: "Cerrar piernas — enfoque en aductores internos" }
                 ]
             },
             pantorrillas: {
